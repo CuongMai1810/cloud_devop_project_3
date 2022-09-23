@@ -15,6 +15,15 @@ commands:
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
             aws cloudformation delete-stack \
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+  aws_configure_credential:
+    steps:
+      - run:
+          name: Create Credential Configuration AWS
+          command: |
+            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+            aws configure set aws_session_token $AWS_SESSION_TOKEN
+            aws configure set region $AWS_DEFAULT_REGION
 
   revert_migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -139,6 +148,7 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - aws_configure_credential
       - run: 
           name: Install tar
           command: yum install -y tar
@@ -185,7 +195,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprinters:
-            - "1b:c1:b3:64:22:bc:2b:0f:9f:8f:c0:46:65:e8:43:03"
+            - "59:a2:34:27:e6:56:52:3b:9d:2b:48:d5:c6:19:43:c6"
       - run:
           name: Install dependencies
           command: |
@@ -282,7 +292,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprinters:
-            - "1b:c1:b3:64:22:bc:2b:0f:9f:8f:c0:46:65:e8:43:03"
+            - "59:a2:34:27:e6:56:52:3b:9d:2b:48:d5:c6:19:43:c6"
       - run:
           name: Install dependencies
           command: |
